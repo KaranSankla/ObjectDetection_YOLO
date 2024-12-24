@@ -157,7 +157,7 @@ for filename in os.listdir(image_folder_path):
                     x1, y1, x2, y2 = detected_box
                     car_id_counter += 1
                     output_file.write(
-                        f"CAR ID: {car_id_counter}, YOLO distance: {distance_car:.2f}m, GT distance: {ground_truth_box[4]:.2f}m, IoU: {iou:.2f}\n")
+                        f"CAR ID: {car_id_counter}, YOLO distance: {distance_car:.2f}m, GT distance: {ground_truth_box[4]:.2f}m, IoU Between YoloBB {detected_box} and GT_BB {ground_truth_box[:4]}: {iou:.2f}\n")
                     print(
                         f' CAR ID:{car_id_counter} Yolo distance: {distance_car:.2f}m, GT distance: {ground_truth_box[4]:.2f}m, IoU: {iou:.2f}')
 
@@ -172,19 +172,19 @@ for filename in os.listdir(image_folder_path):
 
                     # ID background
                     id_size = cv2.getTextSize(id_text, cv2.FONT_HERSHEY_SIMPLEX, text_scale, text_thickness)[0]
-                    cv2.rectangle(img, (x1, y1 - 40), (x1 + id_size[0] + 5, y1 - 20), (0, 0, 0), -1)
+                    cv2.rectangle(img, (x1, y1 - 40), (x1 + id_size[0] + 5, y1 - 20), (177, 222, 206), -1)
                     cv2.putText(img, id_text, (x1, y1 - 25), cv2.FONT_HERSHEY_SIMPLEX, text_scale, (255, 255, 255),
                                 text_thickness)
 
                     # YOLO background
                     yolo_size = cv2.getTextSize(yolo_text, cv2.FONT_HERSHEY_SIMPLEX, text_scale, text_thickness)[0]
-                    cv2.rectangle(img, (x1, y1 - 20), (x1 + yolo_size[0] + 5, y1 - 5), (0, 0, 0), -1)
+                    cv2.rectangle(img, (x1, y1 - 20), (x1 + yolo_size[0] + 5, y1 - 5), (177, 222, 206), -1)
                     cv2.putText(img, yolo_text, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, text_scale, (255, 255, 255),
                                 text_thickness)
 
                     # GT background
                     gt_size = cv2.getTextSize(gt_text, cv2.FONT_HERSHEY_SIMPLEX, text_scale, text_thickness)[0]
-                    cv2.rectangle(img, (x1, y1), (x1 + gt_size[0] + 5, y1 + 15), (0, 0, 0), -1)
+                    cv2.rectangle(img, (x1, y1), (x1 + gt_size[0] + 5, y1 + 15), (177, 222, 206), -1)
                     cv2.putText(img, gt_text, (x1, y1 + 10), cv2.FONT_HERSHEY_SIMPLEX, text_scale, (255, 255, 255),
                                 text_thickness)
 
