@@ -139,7 +139,7 @@ for filename in os.listdir(image_folder_path):
         for detected_box in detected_boxes:
             for gt_index, ground_truth_box in enumerate(ground_truth_boxes):
                 iou = calculate_iou(detected_box, ground_truth_box[:4])
-                if iou > 0.45:  # Threshold for matching
+                if iou > 0.5:  # Threshold for matching
                     calibration_file_name = filename.replace(".jpg", ".txt").replace(".png", ".txt")
                     calibration_file_path = os.path.join(calibration_folder_path, calibration_file_name)
 
