@@ -96,6 +96,10 @@ for filename in os.listdir(image_folder_path):
     image_path = os.path.join(image_folder_path, filename)
     if not (filename.endswith(".jpg") or filename.endswith(".png")):
         continue
+    TP = 0
+    FP = 0
+    FN = 0
+
 
     # Read the image
     img = cv2.imread(image_path)
@@ -108,13 +112,14 @@ for filename in os.listdir(image_folder_path):
     detected_boxes = []
     car_id_counter = 0  # Counter for unique car IDs
 
+
     # Process YOLO detections
     for result in results:
         for box in result.boxes:
             if box.cls[0] == 2:  # Class ID for "car"
+
                 x1, y1, x2, y2 = map(int, box.xyxy[0])  # YOLO format conversion
                 detected_boxes.append([x1, y1, x2, y2])
-                cv2.rectangle(img, (x1, y1), (x2, y2), (0, 0, 255), 2)
 
     # Process ground truth labels
     label_file_name = filename.replace(".jpg", ".txt").replace(".png", ".txt")
@@ -131,23 +136,30 @@ for filename in os.listdir(image_folder_path):
                 GT_distance = float(GT_distance)
                 ground_truth_boxes.append([x_min, y_min, x_max, y_max, GT_distance])
                 cv2.rectangle(img, (x_min, y_min),
-                              (x_max, y_max), (0, 255, 0), 2)  # Draw GT box
+                              (x_max, y_max), (0, 255, 0), 1)  # Draw GT box
 
     output_text_path = os.path.join(output_folder_path, f"results_{filename}.txt")
     with open(output_text_path, "w") as output_file:
         # Match detected cars with ground truth boxes
+        text_y_offset = 290
+        line_spacing = 10
         for detected_box in detected_boxes:
             for gt_index, ground_truth_box in enumerate(ground_truth_boxes):
                 iou = calculate_iou(detected_box, ground_truth_box[:4])
                 if iou > 0.5:  # Threshold for matching
+                    TP += 1
+
+
                     calibration_file_name = filename.replace(".jpg", ".txt").replace(".png", ".txt")
                     calibration_file_path = os.path.join(calibration_folder_path, calibration_file_name)
+
 
                     # Load intrinsic matrix and calculate distance
                     if os.path.exists(calibration_file_path):
                         intrinsic_matrix = load_intrinsic_matrix(calibration_file_path)
                         if intrinsic_matrix is not None:
                             distance_car = calculate_distance_aligned(intrinsic_matrix, detected_box)
+
                         else:
                             distance_car = float('inf')
                     else:
@@ -155,6 +167,7 @@ for filename in os.listdir(image_folder_path):
                         distance_car = float('inf')
 
                     x1, y1, x2, y2 = detected_box
+                    cv2.rectangle(img, (x1, y1), (x2, y2), (0, 0, 255), 1)
                     car_id_counter += 1
                     output_file.write(
                         f"CAR ID: {car_id_counter}, YOLO distance: {distance_car:.2f}m, GT distance: {ground_truth_box[4]:.2f}m, IoU Between YoloBB {detected_box} and GT_BB {ground_truth_box[:4]}: {iou:.2f}\n")
@@ -166,29 +179,49 @@ for filename in os.listdir(image_folder_path):
                     # Text positions and sizes
                     text_scale = 0.3
                     text_thickness = 1
-                    id_text = f"ID: {car_id_counter}"
+                    IOU = f"IoU: {iou:.2f}"
                     yolo_text = f"YOLO: {distance_car:.2f}m"
                     gt_text = f"GT: {ground_truth_box[4]:.2f}m"
+                    id_text = f"ID: {car_id_counter}"
 
                     # ID background
-                    id_size = cv2.getTextSize(id_text, cv2.FONT_HERSHEY_SIMPLEX, text_scale, text_thickness)[0]
-                    cv2.rectangle(img, (x1, y1 - 40), (x1 + id_size[0] + 5, y1 - 20), (177, 222, 206), -1)
-                    cv2.putText(img, id_text, (x1, y1 - 25), cv2.FONT_HERSHEY_SIMPLEX, text_scale, (255, 255, 255),
+                    id_size = cv2.getTextSize(IOU, cv2.FONT_HERSHEY_SIMPLEX, text_scale, text_thickness)[0]
+                    #cv2.rectangle(img, (x1, y1 - 40), (x1 + id_size[0] + 5, y1 - 20), (0, 0, 0), -1)
+                    cv2.putText(img, IOU, (x1, y1 - 25), cv2.FONT_HERSHEY_SIMPLEX, text_scale, (147, 100, 179),
                                 text_thickness)
+                    cv2.putText(img, id_text, (x1, y1-5), cv2.FONT_HERSHEY_SIMPLEX, text_scale, (118,212,207),)
 
                     # YOLO background
                     yolo_size = cv2.getTextSize(yolo_text, cv2.FONT_HERSHEY_SIMPLEX, text_scale, text_thickness)[0]
-                    cv2.rectangle(img, (x1, y1 - 20), (x1 + yolo_size[0] + 5, y1 - 5), (177, 222, 206), -1)
-                    cv2.putText(img, yolo_text, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, text_scale, (255, 255, 255),
+                    #cv2.rectangle(img, (x1, y1 - 20), (x1 + yolo_size[0] + 5, y1 - 5), (0, 0, 0), -1)
+                    cv2.putText(img, yolo_text, (x1, y1 - 15), cv2.FONT_HERSHEY_SIMPLEX, text_scale, (0, 0, 255),
                                 text_thickness)
 
                     # GT background
                     gt_size = cv2.getTextSize(gt_text, cv2.FONT_HERSHEY_SIMPLEX, text_scale, text_thickness)[0]
-                    cv2.rectangle(img, (x1, y1), (x1 + gt_size[0] + 5, y1 + 15), (177, 222, 206), -1)
-                    cv2.putText(img, gt_text, (x1, y1 + 10), cv2.FONT_HERSHEY_SIMPLEX, text_scale, (255, 255, 255),
+                    #cv2.rectangle(img, (x1, y1), (x1 + gt_size[0] + 5, y1 + 15), (0, 0, 0), -1)
+                    cv2.putText(img, gt_text, (x1, y1 + 10), cv2.FONT_HERSHEY_SIMPLEX, text_scale, (0, 255, 0),
                                 text_thickness)
 
+                    cv2.putText(img,
+                                f"ID: {car_id_counter:.2f} ; gt: {ground_truth_box[4]:.2f}Meters ; yolo: {distance_car:.2f} Meters; IoU: {iou:.2f}",
+                                (950, text_y_offset), cv2.FONT_HERSHEY_SIMPLEX, 0.3, (0, 0, 255), 1)
+                    text_y_offset += line_spacing
                     break
+
+
+
+        FP = len(detected_boxes) - TP
+        FN = len(ground_truth_boxes) - TP
+        Precision = TP / (TP + FP) if TP + FP > 0 else 0.0
+        Recall = TP / (TP + FN) if TP + FN > 0 else 0.0
+        print(f"Precision: {Precision:.2f} ;, Recall: {Recall:.2f}")
+        print(f"TP: {TP:.2f} ;, FP: {FP:.2f} ;, FN: {FN:.2f}")
+        Recall_Precision_text = f"Recall: {Recall:.2f} ; Precision: {Precision:.2f}"
+        cv2.putText(img, Recall_Precision_text, (420, 330), cv2.FONT_HERSHEY_SIMPLEX, 1, (67, 67, 232),
+                    2)
+
+
 
         # Save annotated image
         output_path = os.path.join(output_folder_path, filename)
