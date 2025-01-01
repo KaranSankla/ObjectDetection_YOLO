@@ -22,7 +22,12 @@
           <mxGeometry x="230" y="110" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="0s8KUhowPci_GjtV0Qzg-9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="0s8KUhowPci_GjtV0Qzg-3" target="0s8KUhowPci_GjtV0Qzg-8">
-          <mxGeometry relative="1" as="geometry" />
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="480" y="190" />
+              <mxPoint x="480" y="190" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="0s8KUhowPci_GjtV0Qzg-3" value="Run YOLO on an Image&amp;nbsp;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="450" y="110" width="120" height="60" as="geometry" />
@@ -49,7 +54,7 @@
         <mxCell id="0s8KUhowPci_GjtV0Qzg-22" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="0s8KUhowPci_GjtV0Qzg-8" target="0s8KUhowPci_GjtV0Qzg-21">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="510" y="390" />
+              <mxPoint x="480" y="390" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -61,13 +66,12 @@
         <mxCell id="0s8KUhowPci_GjtV0Qzg-26" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="0s8KUhowPci_GjtV0Qzg-8" target="0s8KUhowPci_GjtV0Qzg-25">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="510" y="340" />
-              <mxPoint x="620" y="340" />
+              <mxPoint x="480" y="340" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="0s8KUhowPci_GjtV0Qzg-8" value="Car Class is Detected in an Image?" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="450" y="230" width="120" height="60" as="geometry" />
+          <mxGeometry x="440" y="220" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="0s8KUhowPci_GjtV0Qzg-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" target="0s8KUhowPci_GjtV0Qzg-2">
           <mxGeometry relative="1" as="geometry">
@@ -84,12 +88,12 @@
             <mxPoint x="619.9999999999998" y="217.6544827586207" as="sourcePoint" />
             <mxPoint x="573.7199999999998" y="120" as="targetPoint" />
             <Array as="points">
-              <mxPoint x="680" y="140" />
+              <mxPoint x="670" y="140" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="0s8KUhowPci_GjtV0Qzg-12" value="Next Image" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="620" y="230" width="120" height="60" as="geometry" />
+          <mxGeometry x="600" y="220" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="0s8KUhowPci_GjtV0Qzg-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="0s8KUhowPci_GjtV0Qzg-19" target="0s8KUhowPci_GjtV0Qzg-21">
           <mxGeometry relative="1" as="geometry">
@@ -116,7 +120,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="0s8KUhowPci_GjtV0Qzg-25" value="Count Number of Cars Detected by YOLO (DetectedBoxes)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="550" y="300" width="120" height="60" as="geometry" />
+          <mxGeometry x="580" y="310" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="0s8KUhowPci_GjtV0Qzg-30" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="0s8KUhowPci_GjtV0Qzg-27" target="0s8KUhowPci_GjtV0Qzg-29">
           <mxGeometry relative="1" as="geometry">
@@ -144,7 +148,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="0s8KUhowPci_GjtV0Qzg-29" value="Calculate False Positive(FP)&lt;div&gt;&amp;nbsp;FP= DetectedBoxes-TP&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="550" y="390" width="120" height="60" as="geometry" />
+          <mxGeometry x="580" y="390" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="0s8KUhowPci_GjtV0Qzg-37" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="0s8KUhowPci_GjtV0Qzg-32" target="0s8KUhowPci_GjtV0Qzg-36">
           <mxGeometry relative="1" as="geometry">
@@ -171,7 +175,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="0s8KUhowPci_GjtV0Qzg-38" value="Calculate Precision&amp;nbsp;&lt;div&gt;= TP/ TP + FP&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="550" y="480" width="120" height="60" as="geometry" />
+          <mxGeometry x="580" y="480" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="0s8KUhowPci_GjtV0Qzg-43" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="0s8KUhowPci_GjtV0Qzg-40" target="0s8KUhowPci_GjtV0Qzg-42">
           <mxGeometry relative="1" as="geometry" />
@@ -201,6 +205,9 @@
         </mxCell>
         <mxCell id="0s8KUhowPci_GjtV0Qzg-50" value="Refer Fig. 2" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="440" y="665" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="0s8KUhowPci_GjtV0Qzg-56" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="690" height="900" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
