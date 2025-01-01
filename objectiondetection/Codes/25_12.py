@@ -45,6 +45,39 @@ def calculate_iou(box1, box2):
     # IoU
     iou = intersection_area / union_area
     return iou
+def draw_text_with_background(image, text, position, font=cv2.FONT_HERSHEY_SIMPLEX, font_scale=0.3, font_thickness=1, text_color=(255, 255, 255), bg_color=(0, 0, 0), alpha=0.6):
+    """
+    Draw text on an image with a semi-transparent background.
+
+    Args:
+        image (numpy.ndarray): The image to draw on.
+        text (str): The text to display.
+        position (tuple): Bottom-left corner of the text (x, y).
+        font (int): Font type.
+        font_scale (float): Font scale factor.
+        font_thickness (int): Thickness of the text.
+        text_color (tuple): Text color (B, G, R).
+        bg_color (tuple): Background color (B, G, R).
+        alpha (float): Transparency factor for the background (0.0 to 1.0).
+    """
+    # Get text size
+    text_size = cv2.getTextSize(text, font, font_scale, font_thickness)[0]
+    text_width, text_height = text_size
+    x, y = position
+
+    # Calculate the background rectangle coordinates
+    top_left = (x, y - text_height - 2)
+    bottom_right = (x + text_width + 5, y + 2)
+
+    # Overlay the rectangle
+    overlay = image.copy()
+    cv2.rectangle(overlay, top_left, bottom_right, bg_color, -1)
+
+    # Blend the rectangle with the image
+    cv2.addWeighted(overlay, alpha, image, 1 - alpha, 0, image)
+
+    # Draw the text over the rectangle
+    cv2.putText(image, text, (x, y), font, font_scale, text_color, font_thickness, lineType=cv2.LINE_AA)
 
 def load_intrinsic_matrix(calibration_file_path):
     try:
@@ -141,8 +174,8 @@ for filename in os.listdir(image_folder_path):
     output_text_path = os.path.join(output_folder_path, f"results_{filename}.txt")
     with open(output_text_path, "w") as output_file:
         # Match detected cars with ground truth boxes
-        text_y_offset = 290
-        line_spacing = 10
+        text_y_offset = 250
+        line_spacing = 15
         for detected_box in detected_boxes:
             for gt_index, ground_truth_box in enumerate(ground_truth_boxes):
                 iou = calculate_iou(detected_box, ground_truth_box[:4])
@@ -187,25 +220,26 @@ for filename in os.listdir(image_folder_path):
                     # ID background
                     id_size = cv2.getTextSize(IOU, cv2.FONT_HERSHEY_SIMPLEX, text_scale, text_thickness)[0]
                     #cv2.rectangle(img, (x1, y1 - 40), (x1 + id_size[0] + 5, y1 - 20), (0, 0, 0), -1)
-                    cv2.putText(img, IOU, (x1, y1 - 25), cv2.FONT_HERSHEY_SIMPLEX, text_scale, (147, 100, 179),
-                                text_thickness)
-                    cv2.putText(img, id_text, (x1, y1-5), cv2.FONT_HERSHEY_SIMPLEX, text_scale, (118,212,207),)
+                    #cv2.putText(img, IOU, (x1, y1 - 15), cv2.FONT_HERSHEY_SIMPLEX, text_scale, (107, 22, 219),text_thickness)
 
+                    #cv2.putText(img, id_text, (x1, y1-25), cv2.FONT_HERSHEY_SIMPLEX, text_scale, (28,237,230))
+                    draw_text_with_background(img, IOU, (x1, y1 - 20), text_color=(107, 22, 219), bg_color=(255, 255, 255))
+                    draw_text_with_background(img, id_text, (x1, y1-35), text_color=(0,0,0),bg_color=(255, 255, 255))
                     # YOLO background
                     yolo_size = cv2.getTextSize(yolo_text, cv2.FONT_HERSHEY_SIMPLEX, text_scale, text_thickness)[0]
                     #cv2.rectangle(img, (x1, y1 - 20), (x1 + yolo_size[0] + 5, y1 - 5), (0, 0, 0), -1)
-                    cv2.putText(img, yolo_text, (x1, y1 - 15), cv2.FONT_HERSHEY_SIMPLEX, text_scale, (0, 0, 255),
-                                text_thickness)
+                    #cv2.putText(img, yolo_text, (x1, y1 - 5), cv2.FONT_HERSHEY_SIMPLEX, text_scale, (0, 0, 255), text_thickness)
+                    draw_text_with_background(img, yolo_text, (x1, y1 - 5), text_color=(0, 0, 255), bg_color=(255, 255, 255))
 
                     # GT background
                     gt_size = cv2.getTextSize(gt_text, cv2.FONT_HERSHEY_SIMPLEX, text_scale, text_thickness)[0]
                     #cv2.rectangle(img, (x1, y1), (x1 + gt_size[0] + 5, y1 + 15), (0, 0, 0), -1)
-                    cv2.putText(img, gt_text, (x1, y1 + 10), cv2.FONT_HERSHEY_SIMPLEX, text_scale, (0, 255, 0),
-                                text_thickness)
+                    #cv2.putText(img, gt_text, (x1, y1 + 10), cv2.FONT_HERSHEY_SIMPLEX, text_scale, (0, 255, 0),text_thickness)
+                    draw_text_with_background(img, gt_text, (x1, y1 + 10), text_color=(0, 255, 0),bg_color=(255, 255, 255))
 
-                    cv2.putText(img,
-                                f"ID: {car_id_counter:.2f} ; gt: {ground_truth_box[4]:.2f}Meters ; yolo: {distance_car:.2f} Meters; IoU: {iou:.2f}",
-                                (950, text_y_offset), cv2.FONT_HERSHEY_SIMPLEX, 0.3, (0, 0, 255), 1)
+                    #cv2.putText(img, f"ID: {car_id_counter:.2f} ; gt: {ground_truth_box[4]:.2f}Meters ; yolo: {distance_car:.2f} Meters; IoU: {iou:.2f}", (950, text_y_offset), cv2.FONT_HERSHEY_SIMPLEX, 0.3, (0, 0, 255), 1)
+                    draw_text_with_background(img, f"ID: {car_id_counter:.2f} ; gt: {ground_truth_box[4]:.2f}m ; yolo: {distance_car:.2f} m; IoU: {iou:.2f}", (1000, text_y_offset), text_color=(0, 0, 0),
+                                              bg_color=(255, 255, 255))
                     text_y_offset += line_spacing
                     break
 
