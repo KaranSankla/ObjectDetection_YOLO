@@ -12,14 +12,7 @@ output_folder_path = r'D:\Masters\ComputerVision\CodingEX\Task2\KITTI_Selection\
 os.makedirs(output_folder_path, exist_ok=True)
 
 def calculate_iou(box1, box2):
-    """
-    Calculate Intersection over Union (IoU) between two bounding boxes.
-    Args:
-        box1: List or tuple with coordinates [x_min, y_min, x_max, y_max].
-        box2: List or tuple with coordinates [x_min, y_min, x_max, y_max].
-    Returns:
-        IoU value as a float.
-    """
+
     # Coordinates of the intersection rectangle
     x_min_inter = max(box1[0], box2[0])
     y_min_inter = max(box1[1], box2[1])
